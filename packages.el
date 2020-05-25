@@ -5,7 +5,7 @@
 ;; the command line, then restart Emacs for the changes to take effect.
 ;; Alternatively, use M-x doom/reload.
 
-(package! golden-ratio)
+(package! zoom)
 (package! smart-input-source)
 
 
