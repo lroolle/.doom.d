@@ -3,7 +3,7 @@
 (setq user-full-name "Eric Wang"
       user-mail-address "wrqatw@gmail.com")
 
-(setq doom-font (font-spec :family "Courier" :size 18)
+(setq doom-font (font-spec :family "Courier" :size 17)
       doom-variable-pitch-font (font-spec :family "Courier" :height 120)
       doom-unicode-font (font-spec :family "all-the-icons")
       doom-big-font (font-spec :family "Courier" :size 20))
@@ -17,16 +17,11 @@
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
+;; Company
+(setq +lsp-company-backend '(company-lsp :with company-tabnine :separate))
 (after! company
-  (setq company-idle-delay 0.1))
-
-(use-package smart-input-source
-  :config
-  (setq smart-input-source-external-ism "im-select"
-        smart-input-source-english-input-source "com.apple.keylayout.ABC"
-        smart-input-source-other-input-source "com.apple.inputmethod.SCIM.ITABC")
-  (add-hook 'text-mode-hook #'smart-input-source-mode)
-  (add-hook 'prog-mode-hook #'smart-input-source-mode))
+  (setq company-idle-delay 0
+        company-show-numbers t))
 
 (use-package zoom
   :after-call pre-command-hook
@@ -40,3 +35,17 @@
    '(zoom-ignored-buffer-name-regexps '("^*calc"))
    ;; '(zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
    ))
+
+(use-package dired-subtree :ensure t
+  :after dired
+  :config
+  (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
+  (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+
+(use-package smart-input-source
+  :config
+  (setq smart-input-source-external-ism "im-select"
+        smart-input-source-english-input-source "com.apple.keylayout.ABC"
+        smart-input-source-other-input-source "com.apple.inputmethod.SCIM.ITABC")
+  (add-hook 'text-mode-hook #'smart-input-source-mode)
+  (add-hook 'prog-mode-hook #'smart-input-source-mode))

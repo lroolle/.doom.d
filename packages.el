@@ -6,8 +6,9 @@
 ;; Alternatively, use M-x doom/reload.
 
 (package! zoom)
+(package! dired-subtree)
+(package! company-tabnine)
 (package! smart-input-source)
-
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
