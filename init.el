@@ -27,7 +27,7 @@
        deft                ; notational velocity for Emacs
        doom                ; what makes DOOM look the way it does
        doom-dashboard      ; a nifty splash screen for Emacs
-       doom-quit           ; DOOM quit-message prompts when you quit Emacs
+       ;;doom-quit           ; DOOM quit-message prompts when you quit Emacs
        fill-column         ; a `fill-column' indicator
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
@@ -37,7 +37,7 @@
        neotree             ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       ;;pretty-code       ; ligatures or substitute text with pretty symbols
+       pretty-code       ; ligatures or substitute text with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        ;treemacs           ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
@@ -75,9 +75,9 @@
        vterm               ; the best terminal emulation in Emacs
 
        :checkers
-       (syntax +childframe)              ; tasing you for every semicolon you forget
-       spell               ; tasing you for misspelling mispelling
-       grammar             ; tasing grammar mistake every you make
+       ;; syntax              ; tasing you for every semicolon you forget
+       ;; spell               ; tasing you for misspelling mispelling
+       ;; grammar             ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
@@ -125,7 +125,7 @@
        ;;idris             ;
        json                ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       javascript          ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -133,7 +133,7 @@
        ;;factor
        ;;ledger            ; an accounting system in Emacs
        ;;lua               ; one-based indices? one-based indices
-       markdown            ; writing docs for people to ignore
+       (markdown +grip)            ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
@@ -153,8 +153,8 @@
        ;;purescript        ; javascript, but functional
        (python
          +lsp
-         +pyenv
-         +cpython)            ; beautiful is better than ugly
+         +pyenv)
+         ;; +cpython)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
