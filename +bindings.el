@@ -31,6 +31,10 @@
    :desc "Previous workspace"       :n "["   #'+workspace/switch-left
    :desc "Rename workspace"         :n "r"   #'+workspace:rename
    )
+  ;; Window bindings
+  (:desc "window" :prefix "w"
+   :desc "zoom"   :n "z" #'zoom
+   )
   )
  )
 

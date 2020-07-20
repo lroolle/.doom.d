@@ -15,7 +15,9 @@
       ns-auto-hide-menu-bar t
       tool-bar-mode 0
       org-directory "~/G/org/"
-      display-line-numbers-type 'relative)
+      display-line-numbers-type 'relative
+      avy-all-windows t ;; gs SPC to search all windows
+      )
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
@@ -28,84 +30,62 @@
   (setq company-idle-delay 0
         company-show-numbers t))
 
+;; Evil snipe
+(setq evil-snipe-scope 'visible)
+
 ;; FIXME Fix for emacs 27
 ;; https://github.com/emacs-lsp/lsp-mode/issues/1778
 (setq lsp-gopls-codelens nil)
 
-(use-package zoom
+(use-package! zoom
   :after-call pre-command-hook
   :config
-  (remove-hook 'window-configuration-change-hook #'zoom)
-  (add-hook 'doom-switch-window-hook #'zoom)
   (custom-set-variables
-   '(zoom-size '(0.7 . 0.7))
-   '(zoom-ignored-major-modes '(dired-mode markdown-mode vterm-mode org-mode helpful-mode))
-   '(zoom-ignored-buffer-names '("*doom:scratch*" "*info*"))
-   '(zoom-ignored-buffer-name-regexps '("^*calc"))
+   '(zoom-size '(0.68 . 0.68))
+   ;; '(zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode))
+   ;; '(zoom-ignored-buffer-names '("*info*"))
+   ;; '(zoom-ignored-buffer-name-regexps '("^*calc" "\\*helpful variable: .*\\*"))
    ;; '(zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
-   ))
+   )
+  ;; (remove-hook! 'window-configuration-change-hook #'zoom)
+  ;; (add-hook! 'doom-switch-window-hook #'zoom)
+  ;; (add-hook! 'doom-switch-buffer-hook #'zoom)
+  )
 
 
-(use-package dired-subtree :ensure t
-  :after dired
-  :config
-  (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
-  (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+(use-package! dired-subtree :ensure t
+              :after dired
+              :config
+              (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
+              (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
-;; (use-package smart-input-source
-;;   :config
-;;   (setq smart-input-source-external-ism "im-select")
-;;   (setq smart-input-source-english
-;;         "com.apple.keylayout.ABC")
-;;   (setq-default smart-input-source-other
-;;                 "com.apple.inputmethod.SCIM.ITABC")
-;;   (smart-input-source-global-respect-mode t)
-;;   ;; (smart-input-source-global-preserve-mode t)
-;;   (add-hook 'text-mode-hook #'smart-input-source-follow-context-mode)
-;;   (add-hook 'prog-mode-hook #'smart-input-source-follow-context-mode)
-;;   (add-hook 'text-mode-hook #'smart-input-source-inline-english-mode)
-;;   (add-hook 'prog-mode-hook #'smart-input-source-inline-english-mode))
-
-(use-package smart-input-source
+(use-package! smart-input-source
   :init
   ;; set the english input source
-  (setq smart-input-source-english
-        "com.apple.keylayout.ABC")
-
+  ;;(setq-default smart-input-source-english "com.apple.keylayout.ABC")
+  (setq-default smart-input-source-english "com.apple.keylayout.ABC")
   ;; set the default other language input source for all buffer
-  (setq-default smart-input-source-other
-                "com.apple.inputmethod.SCIM.ITABC")
+  (setq-default smart-input-source-other "com.apple.inputmethod.SCIM.ITABC")
+
+  ;; :hook
+  ;; enable the /follow context/ and /inline region/ mode for specific buffers
+  ;; (((text-mode prog-mode) . smart-input-source-follow-context-mode)
+  ;;  ((text-mode prog-mode) . smart-input-source-inline-mode))
 
   :config
-  ;; Input source specific cursor color
-  (defvar original-cursor-background nil)
-  (add-hook 'smart-input-source-set-english-hook
-            (lambda ()
-              (when original-cursor-background
-                (set-cursor-color original-cursor-background))))
-  (add-hook 'smart-input-source-set-other-hook
-            (lambda ()
-              (unless original-cursor-background
-                (setq original-cursor-background
-                      (or (cdr (assq 'cursor-color default-frame-alist))
-                          (face-background 'cursor)
-                          "Red")))
-              (set-cursor-color "green")))
-
-  ;; (push 'YOUR-COMMAND smart-input-source-preserve-save-triggers)
-  ;; (push 'YOUR-COMMAND smart-input-source-preserve-M-x-commands)
-
+  ;; enable the /cursor color/ mode
+  (smart-input-source-global-cursor-color-mode t)
   ;; enable the /respect/ mode
   (smart-input-source-global-respect-mode t)
-
-  ;; enable the /follow context/ and /inline english/ mode for all buffers
+  ;; enable the /follow context/ mode for all buffers
   (smart-input-source-global-follow-context-mode t)
-  (smart-input-source-global-inline-english-mode t)
+  ;; enable the /inline english/ mode for all buffers
+  (smart-input-source-global-inline-mode t)
+  )
 
-  ;; enable the /follow context/ and /inline english/ mode for specific buffers
-  ;; :hook
-  ;; (((text-mode prog-mode) . smart-input-source-follow-context-mode)
-  ;;  ((text-mode prog-mode) . smart-input-source-inline-english-mode))
+(use-package! disable-mouse
+  :config
+  (global-disable-mouse-mode)
   )
 
 
