@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+BEGIN_SRC_EXPORT_BOTH
+# uuid: srce
+# key: srce
+# --
+#+BEGIN_SRC $1 :exports both
+`%`$0
+#+END_SRC
