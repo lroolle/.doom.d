@@ -1,9 +1,11 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(setq user-full-name "Eric Wang"
-      user-mail-address "wrqatw@gmail.com")
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 (setq doom-localleader-key ",")
+
+(setq user-full-name "Eric Wang"
+      user-mail-address "wrqatw@gmail.com")
 
 (setq doom-font (font-spec :family "Courier" :size 17)
       doom-variable-pitch-font (font-spec :family "Courier" :height 120)
@@ -14,12 +16,39 @@
 (setq doom-theme 'doom-solarized-dark
       ns-auto-hide-menu-bar t
       tool-bar-mode 0
-      org-directory "~/G/org/"
       display-line-numbers-type 'relative
       avy-all-windows t ;; gs SPC to search all windows
+      evil-snipe-scope 'visible
       )
 
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+;; Org
+(setq org-directory "~/G/org/"
+      org-startup-with-inline-images t
+      org-attach-dir-relative t
+      )
+
+(use-package org-mind-map
+  :init
+  (require 'ox-org)
+  :ensure t
+  ;; Uncomment the below if 'ensure-system-packages` is installed
+  ;;:ensure-system-package (gvgen . graphviz)
+  :config
+  (setq org-mind-map-engine "dot")       ; Default. Directed Graph
+  ;; (setq org-mind-map-engine "neato")  ; Undirected Spring Graph
+  ;; (setq org-mind-map-engine "twopi")  ; Radial Layout
+  ;; (setq org-mind-map-engine "fdp")    ; Undirected Spring Force-Directed
+  ;; (setq org-mind-map-engine "sfdp")   ; Multiscale version of fdp for the layout of large graphs
+  ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
+  ;; (setq org-mind-map-engine "circo")  ; Circular Layout
+  )
+
+
+;; Disable Mouse
+(use-package! disable-mouse
+  :config
+  (global-disable-mouse-mode))
+
 
 ;; Company
 (use-package! company-tabnine
@@ -28,10 +57,8 @@
   (set-company-backend! 'prog-mode 'company-tabnine 'company-capf 'company-yasnippet)
   (setq +lsp-company-backend '(company-lsp :with company-tabnine :separate))
   (setq company-idle-delay 0
+        company-minimum-prefix-length 2
         company-show-numbers t))
-
-;; Evil snipe
-(setq evil-snipe-scope 'visible)
 
 ;; FIXME Fix for emacs 27
 ;; https://github.com/emacs-lsp/lsp-mode/issues/1778
@@ -57,36 +84,32 @@
               :after dired
               :config
               (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
-              (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+              (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map)
+              )
 
-(use-package! smart-input-source
-  :init
-  ;; set the english input source
-  ;;(setq-default smart-input-source-english "com.apple.keylayout.ABC")
-  (setq-default smart-input-source-english "com.apple.keylayout.ABC")
-  ;; set the default other language input source for all buffer
-  (setq-default smart-input-source-other "com.apple.inputmethod.SCIM.ITABC")
 
+(use-package! sis
   ;; :hook
   ;; enable the /follow context/ and /inline region/ mode for specific buffers
-  ;; (((text-mode prog-mode) . smart-input-source-follow-context-mode)
-  ;;  ((text-mode prog-mode) . smart-input-source-inline-mode))
-
+  ;; (((text-mode prog-mode) . sis-follow-context-mode)
+  ;;  ((text-mode prog-mode) . sis-inline-mode))
   :config
+  (sis-ism-lazyman-config
+   ;; "com.apple.keylayout.ABC"
+   "com.apple.keylayout.ABC"
+   ;; "im.rime.inputmethod.Squirrel.Rime"
+   "com.apple.inputmethod.SCIM.ITABC")
+
   ;; enable the /cursor color/ mode
-  (smart-input-source-global-cursor-color-mode t)
+  (sis-global-cursor-color-mode t)
   ;; enable the /respect/ mode
-  (smart-input-source-global-respect-mode t)
+  (sis-global-respect-mode t)
   ;; enable the /follow context/ mode for all buffers
-  (smart-input-source-global-follow-context-mode t)
+  (sis-global-follow-context-mode t)
   ;; enable the /inline english/ mode for all buffers
-  (smart-input-source-global-inline-mode t)
+  (sis-global-inline-mode t)
   )
 
-(use-package! disable-mouse
-  :config
-  (global-disable-mouse-mode)
-  )
 
 
 (load! "+bindings")

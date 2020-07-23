@@ -13,9 +13,10 @@
  :n "C-`"      #'+popup/toggle
  :n "C-<tab>"  #'+popup/other
 
+ ;; Leader
  (:leader
   ;; Workspace bindings
-  (:desc "workspace"                :prefix "TAB"
+  (:desc "Workspace"                :prefix "TAB"
    :desc "Display tab bar"          :n "TAB" #'+workspace/other
    :desc "New workspace"            :n "n"   #'+workspace/new
    :desc "Load workspace from file" :n "l"   #'+workspace/load
@@ -33,9 +34,29 @@
    )
   ;; Window bindings
   (:desc "window" :prefix "w"
-   :desc "zoom"   :n "z" #'zoom
-   )
-  )
+   :desc "zoom"   :n "z" #'zoom))
+
+ ;; Localleader
+ (:localleader
+  (:map markdown-mode-map
+   (:desc "Insert"        :prefix "i"
+    :desc "Blockquote"    "q" 'markdown-insert-blockquote
+    :desc "Bold"          "b" 'markdown-insert-bold
+    :desc "Code"          "c" 'markdown-insert-code
+    :desc "Emphasis"      "e" 'markdown-insert-italic
+    :desc "Footnote"      "f" 'markdown-insert-footnote
+    :desc "Code Block"    "s" 'markdown-insert-gfm-code-block
+    :desc "Image"         "i" 'markdown-insert-image
+    :desc "Link"          "l" 'markdown-insert-link
+    :desc "List Item"     "n" 'markdown-insert-list-item
+    :desc "Pre"           "p" 'markdown-insert-pre)
+   (:desc "Headings" :prefix "h"
+    :desc "One"       "1" 'markdown-insert-header-atx-1
+    :desc "Two"       "2" 'markdown-insert-header-atx-2
+    :desc "Three"     "3" 'markdown-insert-header-atx-3
+    :desc "Four"      "4" 'markdown-insert-header-atx-4
+    :desc "Five"      "5" 'markdown-insert-header-atx-5
+    :desc "Six"       "6" 'markdown-insert-header-atx-6)))
  )
 
 
