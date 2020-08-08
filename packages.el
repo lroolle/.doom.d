@@ -5,12 +5,19 @@
 ;; the command line, then restart Emacs for the changes to take effect.
 ;; Alternatively, use M-x doom/reload.
 
+(package! dired+)
 (package! zoom)
 (package! dired-subtree)
 (package! company-tabnine)
-(package! smart-input-source)
+;; (package! sis)
+(package! sis :recipe
+  (:host github :repo "laishulu/emacs-smart-input-source"))
 (package! disable-mouse)
 (package! org-mind-map)
+(package! org-super-agenda)
+(package! explain-pause-mode)
+;; (package! esup)
+;; (package! benchmark-init)
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...

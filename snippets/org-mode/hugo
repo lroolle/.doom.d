@@ -1,0 +1,58 @@
+# -*- mode: snippet -*-
+# name: hugo
+# uuid: hudo
+# key: hugo
+# condition: t
+# --
+#+TITLE: ${1:`
+(string-join
+ (mapcar #'capitalize
+         ;; Replace -,_... with space
+         (split-string
+          (let (case-fold-search)
+            ;; Seperating lower from upper: hello|World
+            (replace-regexp-in-string
+             "\\([[:lower:]]\\)\\([[:upper:]]\\)" "\\1 \\2"
+             ;; Separating upper from (upper and lower): HTTP|Server
+             (replace-regexp-in-string "\\([[:upper:]]\\)\\([[:upper:]][0-9[:lower:]]\\)"
+                                       "\\1 \\2" (file-name-base buffer-file-name))))
+          "[^[:word:]0-9]+"
+          )) " " )
+`}
+#+DATE: `(format-time-string "%Y-%m-%d")`
+
+#+EXPORT_FILE_NAME: ${2:`
+(string-join
+ (mapcar #'downcase
+         ;; Replace space with -
+         (split-string
+          (let (case-fold-search)
+            (replace-regexp-in-string
+             "\\([[:upper:]]\\)\\([[:lower:]]\\)" "\\1 \\2"
+             (replace-regexp-in-string "\\([[:upper:]]\\)\\([[:upper:]][0-9[:lower:]]\\)"
+                                       "\\1 \\2" (file-name-base buffer-file-name))))
+          "[^[:word:]0-9]+"
+          )) "-" )
+`}
+#+HUGO_WEIGHT: auto
+#+HUGO_BASE_DIR: ~/G/blog
+#+HUGO_AUTO_SET_LASTMOD: t
+#+HUGO_SECTION: ${3:notes}
+#+HUGO_CATEGORIES: ${4:notes}
+#+HUGO_TAGS: ${5:...}
+
+* ${0:`
+(string-join
+ (mapcar #'capitalize
+         ;; Replace -,_... with space
+         (split-string
+          (let (case-fold-search)
+            ;; Seperating lower from upper: hello|World
+            (replace-regexp-in-string
+             "\\([[:lower:]]\\)\\([[:upper:]]\\)" "\\1 \\2"
+             ;; Separating upper from (upper and lower): HTTP|Server
+             (replace-regexp-in-string "\\([[:upper:]]\\)\\([[:upper:]][0-9[:lower:]]\\)"
+                                       "\\1 \\2" (file-name-base buffer-file-name))))
+          "[^[:word:]0-9]+"
+          )) " " )
+`}

@@ -3,6 +3,6 @@
 # uuid: srcpy
 # key: spy
 # --
-#+BEGIN_SRC python :exports both
+#+BEGIN_SRC python :exports both :results output
 `%`$0
 #+END_SRC

@@ -31,17 +31,17 @@
        fill-column         ; a `fill-column' indicator
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
-       indent-guides       ; highlighted indent columns
-       modeline            ; snazzy, Atom-inspired modeline, plus API
+       ;; indent-guides       ; highlighted indent columns
+       (modeline +light)            ; snazzy, Atom-inspired modeline, plus API
        ;;nav-flash         ; blink cursor line after big motions
        neotree             ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       pretty-code         ; ligatures or substitute text with pretty symbols
+       ;;pretty-code         ; ligatures or substitute text with pretty symbols
        ;;tabs              ; an tab bar for Emacs
-       ;treemacs           ; a project drawer, like neotree but cooler
+                                        ;treemacs           ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
-       vc-gutter           ; vcs diff in the fringe
+       ;; vc-gutter           ; vcs diff in the fringe
        vi-tilde-fringe     ; fringe tildes to mark beyond EOB
        window-select       ; visually switch windows
        workspaces          ; tab emulation, persistence & separate workspaces
@@ -59,7 +59,7 @@
        ;;parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
        snippets            ; my elves. They type so I don't have to
-       word-wrap           ; soft wrapping with language-aware indent
+       ;; word-wrap           ; soft wrapping with language-aware indent
 
        :emacs
        dired               ; making dired pretty [functional]
@@ -75,9 +75,9 @@
        vterm               ; the best terminal emulation in Emacs
 
        :checkers
-       ;; syntax              ; tasing you for every semicolon you forget
-       spell               ; tasing you for misspelling mispelling
-       ;; grammar             ; tasing grammar mistake every you make
+       syntax              ; tasing you for every semicolon you forget
+       (spell +aspell)     ; tasing you for misspelling mispelling
+       grammar             ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
@@ -88,7 +88,8 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
-       lookup              ; navigate your code and its documentation
+       (lookup +dictionary
+               +docsets)              ; navigate your code and its documentation
        lsp
        ;;macos             ; MacOS-specific commands
        magit               ; a git porcelain for Emacs
@@ -128,7 +129,7 @@
        (javascript +lsp)   ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       ;;latex             ; writing papers in Emacs has never been so fun
+       ;; latex             ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
@@ -138,25 +139,26 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org                ; organize your plain life in plain text
-         +download
-         +mind-map
-         +brain
-         +dragndrop        ; file drag & drop support
-         +gnuplot
-         +hugo
-         +journal
-         +jupyter
-         +pandoc           ; pandoc integration into org's exporter
-         +pomodoro
-         +present)
+        +download
+        +brain
+        +dragndrop        ; file drag & drop support
+        +gnuplot
+        +hugo
+        +journal
+        +roam
+        +noter
+        +jupyter
+        +pandoc           ; pandoc integration into org's exporter
+        +pomodoro
+        +present)
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
        (python
-         +lsp
-         +pyenv)
-         ;; +cpython)      ; beautiful is better than ugly
+        +lsp
+        +pyenv)
+       ;; +cpython)      ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
@@ -179,7 +181,7 @@
        ;;(wanderlust +gmail)
 
        :app
-       ;;calendar
+       ;; calendar
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;; twitter             ; twitter client https://twitter.com/vnought

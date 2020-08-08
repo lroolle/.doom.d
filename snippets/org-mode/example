@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: #+BEGIN_EXAMPLE
+# uuid: beginexample
+# key: exa
+# condition: t
+# --
+#+BEGIN_EXAMPLE
+`%`$0
+#+END_EXAMPLE

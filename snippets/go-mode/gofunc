@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: gofunc
+# uuid: gofunc
+# key: gof
+# condition: t
+# --
+go func(${1:args}){
+    `%`$0
+}(${1:args})

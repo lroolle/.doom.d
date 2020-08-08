@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: chansend
+# uuid: chansend
+# key: <
+# condition: t
+# --
+${1:x} <- ${2:`%`}

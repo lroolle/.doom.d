@@ -1,0 +1,28 @@
+auto-save-mode-hook is a variable defined in simple.el.gz.
+
+Value
+nil
+
+Toggle Set
+
+Documentation
+Hook run after entering or leaving auto-save-mode.
+
+No problems result if this variable is not bound.
+add-hook automatically binds it.  (This is true for all hook variables.)
+
+References
+auto-save-mode-hook is unused in simple.el.gz.
+
+Find all references
+
+Debugging
+Forget
+
+Source Code
+;; Defined in /usr/local/Cellar/emacs-plus/HEAD-41232e6/share/emacs/27.0.91/lisp/simple.el.gz
+
+
+Symbol Properties
+variable-documentation
+  "Hook run after entering or leaving `auto-save-mode'.\nNo problems result if this variable is not bound.\n`add-hook' automatically binds it.  (This is true for all hook variables.)"

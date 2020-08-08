@@ -3,6 +3,6 @@
 # uuid: srcgo
 # key: sgo
 # --
-#+BEGIN_SRC go :exports both
+#+BEGIN_SRC go :exports both :imports "fmt"
 `%`$0
 #+END_SRC

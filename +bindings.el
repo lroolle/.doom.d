@@ -1,4 +1,23 @@
 ;;; ~/.doom.d/+bindings.el -*- lexical-binding: t; -*-
+;;;
+
+;;; Format
+;;;###autoload
+;; (defun +org/format-src-block ()
+;;   (interactive)
+;;   (let ((element (org-element-at-point)))
+;;     (unless (eq (org-element-type element) 'src-block)
+;;       (error "Not in a source block"))
+;;     (save-excursion
+;;       (goto-char (org-babel-where-is-src-block-head element))
+;;       (let* ((beg (line-beginning-position 2))
+;;              (end (progn
+;;                     (goto-char (org-element-property :end element))
+;;                     (skip-chars-backward " \t\n")
+;;                     (line-beginning-position)))
+;;              (lang (org-element-property :language element))
+;;              (major-mode (org-src-get-lang-mode lang)))
+;;         (+format/region beg end)))))
 
 (map!
  ;; Ensure there are no conflicts
@@ -6,12 +25,23 @@
  :nmvo doom-localleader-key nil
 
  ;; Easier window navigation
- :n "C-h"   #'evil-window-left
- :n "C-j"   #'evil-window-down
- :n "C-k"   #'evil-window-up
- :n "C-l"   #'evil-window-right
- :n "C-`"      #'+popup/toggle
- :n "C-<tab>"  #'+popup/other
+ :n "C-h"     #'evil-window-left
+ :n "C-j"     #'evil-window-down
+ :n "C-k"     #'evil-window-up
+ :n "C-l"     #'evil-window-right
+ :n "C-`"     #'+popup/toggle
+ :n "C-<tab>" #'+popup/other
+ ;; :n "<RET>"   #'evil-ex-nohighlight
+
+ ;; ORG MODE
+ (:map org-mode-map
+  (:leader
+   ;; Window bindings
+   (:desc "Note" :prefix "n"
+    :desc "Add note current entry"   :n "n" #'org-add-note)))
+  ;; (:localleader
+   ;; (:desc "Org format src block"     :n "f" #'+org/format-src-block)
+   ;; (:desc "Org insert footnotes"     :n "F" #'+org/org-footnote-new)))
 
  ;; Leader
  (:leader
@@ -56,7 +86,10 @@
     :desc "Three"     "3" 'markdown-insert-header-atx-3
     :desc "Four"      "4" 'markdown-insert-header-atx-4
     :desc "Five"      "5" 'markdown-insert-header-atx-5
-    :desc "Six"       "6" 'markdown-insert-header-atx-6)))
+    :desc "Six"       "6" 'markdown-insert-header-atx-6))
+  (:desc "window" :prefix "s"
+   :desc "Org Tags Sparse Tree"   :n "t" #'org-tags-sparse-tree)
+  :desc "Evil NOH" :n "<RET>" #'evil-ex-nohighlight)
  )
 
 
