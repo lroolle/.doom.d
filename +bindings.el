@@ -1,23 +1,5 @@
 ;;; ~/.doom.d/+bindings.el -*- lexical-binding: t; -*-
-;;;
-
-;;; Format
-;;;###autoload
-;; (defun +org/format-src-block ()
-;;   (interactive)
-;;   (let ((element (org-element-at-point)))
-;;     (unless (eq (org-element-type element) 'src-block)
-;;       (error "Not in a source block"))
-;;     (save-excursion
-;;       (goto-char (org-babel-where-is-src-block-head element))
-;;       (let* ((beg (line-beginning-position 2))
-;;              (end (progn
-;;                     (goto-char (org-element-property :end element))
-;;                     (skip-chars-backward " \t\n")
-;;                     (line-beginning-position)))
-;;              (lang (org-element-property :language element))
-;;              (major-mode (org-src-get-lang-mode lang)))
-;;         (+format/region beg end)))))
+;;; Private Doom Bindings
 
 (map!
  ;; Ensure there are no conflicts
@@ -33,18 +15,24 @@
  :n "C-<tab>" #'+popup/other
  ;; :n "<RET>"   #'evil-ex-nohighlight
 
+ ;; Short your life
+ :v "~"       #'evil-title-case-region-or-line
+
  ;; ORG MODE
  (:map org-mode-map
   (:leader
    ;; Window bindings
    (:desc "Note" :prefix "n"
     :desc "Add note current entry"   :n "n" #'org-add-note)))
-  ;; (:localleader
-   ;; (:desc "Org format src block"     :n "f" #'+org/format-src-block)
-   ;; (:desc "Org insert footnotes"     :n "F" #'+org/org-footnote-new)))
+ ;; (:localleader
+ ;; (:desc "Org format src block"     :n "f" #'+org/format-src-block)
+ ;; (:desc "Org insert footnotes"     :n "F" #'+org/org-footnote-new)))
 
  ;; Leader
  (:leader
+  (:desc "X-Up"                         "X"   #'doom/open-scratch-buffer
+   :desc "X-Down"                       "x"   #'org-capture)
+
   ;; Workspace bindings
   (:desc "Workspace"                :prefix "TAB"
    :desc "Display tab bar"          :n "TAB" #'+workspace/other
@@ -63,8 +51,12 @@
    :desc "Rename workspace"         :n "r"   #'+workspace:rename
    )
   ;; Window bindings
-  (:desc "window" :prefix "w"
-   :desc "zoom"   :n "z" #'zoom))
+  (:desc "Window" :prefix "w"
+   :desc "zoom"   :n "z" #'zoom)
+
+  ;; Window bindings
+  (:desc "Toggle"         :prefix "t"
+   :desc "Lsp UI Imenu(Tagbar)"   "u"     #'lsp-ui-imenu))
 
  ;; Localleader
  (:localleader

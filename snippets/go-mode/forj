@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: forj
+# uuid: forj
+# key: forj
+# condition: t
+# --
+for ${1:j} := ${2:0}; $1 < ${3:10}; $1++ {
+    `%`$0
+}

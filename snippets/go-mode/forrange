@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: forrange
+# uuid: forrange
+# key: forr
+# condition: t
+# --
+for ${1:value} := range ${2:target} {
+    `%`$0
+}

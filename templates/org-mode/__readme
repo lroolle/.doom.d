@@ -7,8 +7,8 @@
                             (match-string 2 buffer-file-name))
                   "")`}
 
-#+DATE: `(format-time-string "%Y-%m-%d")`
-
+#+DATE: `(format-time-string "%Y-%m-%d %H:%M")`
+#+STARTUP: overview
 #+EXPORT_FILE_NAME: ${2:`
 (string-join
  (mapcar #'downcase
@@ -27,7 +27,7 @@
 #+HUGO_AUTO_SET_LASTMOD: t
 #+HUGO_SECTION: ${3:notes}
 #+HUGO_CATEGORIES: ${4:notes}
-#+HUGO_TAGS: ${5:...}
+#+HUGO_TAGS: ${5:notes}
 
 * ${0:`
 (string-join

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: func var
+# uuid: func var
+# key: fv
+# condition: t
+# --
+var ${1:name} func(${2:argstype}) ${3:returntype}

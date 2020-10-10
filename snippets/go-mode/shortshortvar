@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: short short var
+# uuid: short-short-var
+# key: :
+# condition: t
+# --
+${1:x} := ${2:`%`}

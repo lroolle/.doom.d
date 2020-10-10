@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: func closure
+# key: f=
+# condition: t
+# --
+${1:name} = func(${2:args} ${3:argstype}) ${4:returntype} {
+    `%`$0
+}

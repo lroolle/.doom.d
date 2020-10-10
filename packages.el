@@ -5,21 +5,26 @@
 ;; the command line, then restart Emacs for the changes to take effect.
 ;; Alternatively, use M-x doom/reload.
 
-(package! dired+)
+;; (package! esup)
+;; (package! benchmark-init)
 (package! zoom)
 (package! dired-subtree)
 (package! company-tabnine)
-;; (package! sis)
+(package! disable-mouse)
+;; (package! explain-pause-mode)
+(package! org-super-agenda)
+(package! org-mind-map)
+(package! evil-pinyin)
+;; (package! cnfonts)
+;; (package! pocket-reader)
+(package! leetcode)
+
+(package! valign :recipe (:host github :repo "casouri/valign"))
 (package! sis :recipe
   (:host github :repo "laishulu/emacs-smart-input-source"))
-(package! disable-mouse)
-(package! org-mind-map)
-(package! org-super-agenda)
-(package! explain-pause-mode)
-;; (package! esup)
-;; (package! benchmark-init)
+;; (package! ranger)
 
-;; Doom's packages are pinned to a specific commit and updated from release to
+
 ;; release. The `unpin!' macro allows you to unpin single packages...
 ;(unpin! pinned-package)
 ;; ...or multiple packages
@@ -40,6 +45,7 @@
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
+
 ;(package! this-package
 ;  :recipe (:host github :repo "username/repo"
 ;           :files ("some-file.el" "src/lisp/*.el")))

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+BEGIN_SRC_SCHEME
+# uuid: srcscheme
+# key: sscheme
+# --
+#+BEGIN_SRC scheme :exports both
+`%`$0
+#+END_SRC

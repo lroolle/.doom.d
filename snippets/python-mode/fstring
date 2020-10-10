@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: fstring
+# uuid: fstring
+# key: fs
+# condition: t
+# --
+f"$1{$0}"

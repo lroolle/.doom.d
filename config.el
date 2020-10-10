@@ -4,24 +4,38 @@
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
+(setq url-proxy-services
+      '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+        ("http" . "127.0.0.1:7890")
+        ("https" . "127.0.0.1:7890"))
+      leetcode-prefer-language "golang"
+      leetcode-prefer-sql "mysql"
+      )
+
 (setq doom-localleader-key ","
       auto-save-visited-mode  +1)
 
 (setq user-full-name "Eric Wang"
       user-mail-address "wrqatw@gmail.com")
 
-(setq doom-font (font-spec :family "Courier" :size 17)
-      doom-variable-pitch-font (font-spec :family "Courier" :height 18)
+;; (set-fontset-font "fontset-default" 'han '("Sarasa Gothic SC"))
+(setq doom-font (font-spec :family "Courier" :size 18)
+      doom-variable-pitch-font (font-spec :family "Courier" :size 16 :weight 'semi-bold)
       doom-unicode-font (font-spec :family "all-the-icons")
-      doom-big-font (font-spec :family "Courier" :size 18))
+      doom-big-font (font-spec :family "Courier" :size 19))
 
 ;; Switch to the new window after splitting
 (setq evil-split-window-below t
       evil-vsplit-window-right t)
 
+(setq +doom-dashboard-functions
+      '(eril-dashboard-widget-banner
+        doom-dashboard-widget-shortmenu
+        doom-dashboard-widget-loaded))
+
 ;; https://github.com/hlissner/emacs-doom-themes/issues
-(setq doom-theme 'doom-solarized-dark
-      ns-auto-hide-menu-bar t
+(setq ns-auto-hide-menu-bar t
+      ;; doom-theme 'doom-solarized-dark
       tool-bar-mode 0
       hl-todo-mode t
       ;; Line numbers are pretty slow all around. The performance boost of
@@ -29,9 +43,26 @@
       display-line-numbers-type nil
       avy-all-windows t ;; gs SPC to search all windows
       evil-snipe-scope 'visible
-      ;; org-image-actual-width '(200)
       +format-on-save-enabled-modes  '(not emacs-lisp-mode sql-mode tex-mode latex-mode, xml-mode)
       )
+
+(custom-set-faces!
+  '(font-lock-comment-face :foreground "#839496" :slant oblique))
+;; '(font-lock-keyword-face :slant Oblique))
+
+(use-package! doom-themes
+  :custom-face ; for solarized dark
+  (region                       ((t (:background "#274643"))))
+  ;; (font-lock-constant-face      ((t (:foreground "#2aa198"))))                       ; solarized cyan
+  ;; (highlight-numbers-number     ((t (:foreground "#2aa198"))))                       ; solarized cyan
+  ;; (diff-hl-change               ((t (:background "#2aa198" :foreground "#2aa198")))) ; solarized cyan
+  ;; (show-paren-match             ((t (:foreground "white" :background "#174652"))))
+  :config
+  (setq doom-themes-enable-bold t
+        ;; doom-solarized-dark-brighter-comments t
+        doom-solarized-dark-brighter-text t
+        doom-solarized-dark-comment-bg t)
+  (load-theme 'doom-solarized-dark t))
 
 ;; Org
 ;; It’s an aesthetic plugin that offers fancier bullets. Emacs seems to struggle
@@ -42,6 +73,13 @@
   (let ((filename (read-string "Filename: ")))
     (expand-file-name (format "%s.org" filename) org-notes-directory)))
 
+;; (defun with-no-drawer (func &rest args)
+;;   (interactive "P")
+;;   (let ((org-log-into-drawer (not (car args))))
+;;     (funcall func)))
+
+;; (advice-add 'org-add-note :around #'with-no-drawer)
+
 (defun org-journal-find-location ()
   "Open today's journal, but specify a non-nil prefix argument in order to
   inhibit inserting the heading; org-capture will insert the heading. "
@@ -50,12 +88,12 @@
   ;; will add the new entry as a child entry.
   (goto-char (point-min)))
 
-
 (after! org
+  ;; (add-hook 'org-mode-hook #'valign-mode)
   (remove-hook 'org-mode-hook #'org-superstar-mode)
-  (add-to-list 'org-capture-templates
-               '("d" "Journal entry" entry (function org-journal-find-location)
-                 "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?"))
+  ;; (add-to-list 'org-capture-templates
+  ;;              '("d" "Journal entry" entry (function org-journal-find-location)
+  ;;                "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?"))
   (add-to-list 'org-capture-templates
                '("N" "New Notes" entry (file +org-capture/create-notes-file) ""))
 
@@ -63,11 +101,12 @@
         '((sequence "TODO(t!)" "PROJ(p!)" "STRT(s!)" "WAIT(w!)" "HOLD(h@/!)" "|" "DONE(d!)" "KILL(k!)")
           (sequence "[ ](T!)" "[-](S!)" "[?](W!)" "|" "[X](D)"))
         org-log-into-drawer t
-        org-directory "~/G/org/"
-        org-agenda-files '("~/G/org" "~/G/org/journal")
+        org-directory "~/Dropbox/org/"
+        ;; org-agenda-files '(org-directory (concat org-directory "journal/"))
         org-archive-location (concat org-directory ".archive/%s::")
         org-roam-directory (concat org-directory "notes/")
         org-notes-directory (concat org-directory "notes/")
+        ;; https://orgmode.org/worg/org-tutorials/encrypting-files.html
         ;; org-journal-encrypt-journal t
         org-attach-dir-relative t
         org-log-done 'time
@@ -75,118 +114,39 @@
         org-agenda-log-mode-items '(state)
         org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html)
         org-complete-tags-always-offer-all-agenda-tags t
+        org-image-actual-width 300
+        geiser-default-implementation 'guile
+        geiser-default-implementation 'guile
+        geiser-active-implementations '(mit chicken guile racket chibi chez)
         ))
 
-(use-package org-super-agenda
+(after! org-journal
+  (setq org-journal-file-format "W%V-%Y%m%d.org"
+        org-journal-file-type 'weekly
+        org-journal-start-on-weekday 0
+        org-journal-time-format "%m/%d %R "
+        ))
+
+(use-package! org-super-agenda
   :after org-agenda
   :config
   (setq org-super-agenda-groups
-        '((:auto-category t))
-        )
+        '((:auto-category t)))
   (org-super-agenda-mode))
 
-
-(use-package org-journal
-  :ensure t
-  :defer t
-  :config
-  (setq org-journal-file-format "%Y%m%d.org"))
-
-
-(use-package! org-mind-map
-  :init
-  (require 'ox-org)
-  :ensure t
-  ;; Uncomment the below if 'ensure-system-packages` is installed
-  ;;:ensure-system-package (gvgen . graphviz)
-  :config
-  (setq org-mind-map-engine "dot")       ; Default. Directed Graph
-  ;; (setq org-mind-map-engine "neato")  ; Undirected Spring Graph
-  ;; (setq org-mind-map-engine "twopi")  ; Radial Layout
-  ;; (setq org-mind-map-engine "fdp")    ; Undirected Spring Force-Directed
-  ;; (setq org-mind-map-engine "sfdp")   ; Multiscale version of fdp for the layout of large graphs
-  ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
-  ;; (setq org-mind-map-engine "circo")  ; Circular Layout
-  )
-
-
-;; Disable Mouse
-(use-package! disable-mouse
-  :config
-  (global-disable-mouse-mode))
-
+(after! spell-fu
+  (setq spell-fu-idle-delay 0.1)
+  (setq ispell-personal-dictionary "~/.doom.d/ispell/words.personal.pws"))
 
 ;; Company
 (use-package! company-tabnine
   :after company
   :config
   (set-company-backend! 'prog-mode 'company-tabnine 'company-capf 'company-yasnippet)
-  (setq +lsp-company-backend '(company-lsp :with company-tabnine :separate))
+  (setq +lsp-company-backend '(company-lsp :with company-tabnine :separate company-yasnippet))
   (setq company-idle-delay 0
         company-minimum-prefix-length 2
         company-show-numbers t))
-
-;; FIXME Fix for emacs 27
-;; https://github.com/emacs-lsp/lsp-mode/issues/1778
-(setq lsp-gopls-codelens nil)
-
-(use-package! zoom
-  ;; :hook (doom-first-input . zoom-mode)
-  :config
-  (custom-set-variables
-   '(zoom-size '(0.68 . 0.68))
-   ;; '(zoom-ignored-major-modes '(dired-mode vterm-mode help-mode helpful-mode rxt-help-mode help-mode-menu org-mode))
-   ;; '(zoom-ignored-buffer-names '("*info*"))
-   ;; '(zoom-ignored-buffer-name-regexps '("^*calc" "\\*helpful variable: .*\\*"))
-   ;; '(zoom-ignore-predicates '((lambda () (> (count-lines (point-min) (point-max)) 20))))
-   )
-  ;; (remove-hook! 'window-configuration-change-hook #'zoom)
-  ;; (add-hook! 'doom-switch-window-hook #'zoom)
-  ;; (add-hook! 'doom-switch-buffer-hook #'zoom)
-  )
-
-
-(use-package! dired-subtree :ensure t
-              :after dired
-              :config
-              (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
-              (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map)
-              )
-
-(use-package sis
-  ;; :hook
-  ;; enable the /follow context/ and /inline region/ mode for specific buffers
-  ;; (((text-mode prog-mode) . sis-follow-context-mode)
-  ;;  ((text-mode prog-mode) . sis-inline-mode))
-  :config
-  ;; (add-hook 'evil-insert-state-exit-hook #'sis-set-english)
-  (sis-ism-lazyman-config
-   ;; "com.apple.keylayout.ABC"
-   "com.apple.keylayout.ABC"
-   ;; "im.rime.inputmethod.Squirrel.Rime"
-   "com.apple.inputmethod.SCIM.ITABC")
-
-  (setq sis-auto-refresh-seconds nil)
-  ;; enable the /cursor color/ mode
-  (sis-global-cursor-color-mode t)
-  ;; enable the /respect/ mode
-  (sis-global-respect-mode t)
-  ;; enable the /follow context/ mode for all buffers
-  (sis-global-follow-context-mode t)
-  ;; enable the /inline english/ mode for all buffers
-  (sis-global-inline-mode t)
-  )
-
-;; (use-package esup
-;;   :ensure t
-;;   ;; To use MELPA Stable use ":pin mepla-stable",
-;;   :pin melpa
-;;   :commands (esup))
-;; (use-package benchmark-init
-;;   :ensure t
-;;   :config
-;;   ;; To disable collection of benchmark data after init is done.
-;;   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 ;; Templates
 (defvar private-file-templates-dir
@@ -199,6 +159,68 @@
   (set-file-template! "/README\\.org$" ':trigger "__readme" :Mode 'org-mode)
   (set-file-template! "\\.org$" ':trigger "__" :mode 'org-mode)
   (yas-reload-all))
+
+;; FIXME Fix for emacs 27
+;; https://github.com/emacs-lsp/lsp-mode/issues/1778
+(setq lsp-gopls-codelens nil)
+
+(use-package! zoom
+  ;; :hook (doom-first-input . zoom-mode)
+  :config
+  (custom-set-variables
+   '(zoom-size '(0.68 . 0.68))))
+
+(use-package! dired-subtree
+  :config
+  (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
+  (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+
+(use-package! sis
+  :config
+  (add-hook 'evil-insert-state-exit-hook #'sis-set-english)
+  (sis-ism-lazyman-config
+   "com.apple.keylayout.ABC"
+   "com.apple.inputmethod.SCIM.ITABC")
+
+  (setq sis-auto-refresh-seconds nil)
+  (sis-global-cursor-color-mode t)
+  ;; (sis-global-respect-mode t)
+  (sis-global-follow-context-mode t)
+  (sis-global-inline-mode t))
+
+(use-package! evil-pinyin
+  :after evil
+  :config
+  (global-evil-pinyin-mode t))
+
+;; (use-package! cnfonts
+;;   (cnfonts-enable))
+
+;; Disable Mouse
+(use-package! disable-mouse
+  :config
+  (global-disable-mouse-mode))
+
+(after! elfeed
+  (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
+  (setq elfeed-search-filter "@1-month-ago +unread"))
+
+;; This is an Emacs package that creates graphviz directed graphs from
+;; the headings of an org file
+(use-package! org-mind-map
+  :init
+  (require 'ox-org)
+  ;; Uncomment the below if 'ensure-system-packages` is installed
+  ;;:ensure-system-package (gvgen . graphviz)
+  :config
+  ;; (setq org-mind-map-engine "dot")       ; Default. Directed Graph
+  (setq org-mind-map-engine "neato")  ; Undirected Spring Graph
+  ;; (setq org-mind-map-engine "twopi")  ; Radial Layout
+  ;; (setq org-mind-map-engine "fdp")    ; Undirected Spring Force-Directed
+  ;; (setq org-mind-map-engine "sfdp")   ; Multiscale version of fdp for the layout of large graphs
+  ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
+  ;; (setq org-mind-map-engine "circo")  ; Circular Layout
+  )
 
 (load! "+bindings")
 (load! "+commands")
