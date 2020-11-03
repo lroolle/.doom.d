@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+BEGIN_SRC_PY
+# uuid: srcjupyterpy
+# key: sjpy
+# --
+#+BEGIN_SRC jupyter-python :session py :exports both
+`%`$0
+#+END_SRC

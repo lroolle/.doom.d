@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: BEGIN_QUOTE
+# uuid: begin-quote
+# key: qu
+# --
+#+BEGIN_QUOTE
+`%`$0
+#+END_QUOTE

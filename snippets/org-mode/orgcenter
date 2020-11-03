@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: BEGIN_CENTER
+# uuid: begin-center
+# key: cen
+# condition: t
+# --
+#+BEGIN_CENTER
+`%`$0
+#+END_CENTER

@@ -4,19 +4,17 @@
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
+
+(setq user-full-name "Eric Wang"
+      user-mail-address "wrqatw@gmail.com"
+      doom-localleader-key ",")
+
 (setq url-proxy-services
       '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
         ("http" . "127.0.0.1:7890")
         ("https" . "127.0.0.1:7890"))
       leetcode-prefer-language "golang"
-      leetcode-prefer-sql "mysql"
-      )
-
-(setq doom-localleader-key ","
-      auto-save-visited-mode  +1)
-
-(setq user-full-name "Eric Wang"
-      user-mail-address "wrqatw@gmail.com")
+      leetcode-prefer-sql "mysql")
 
 ;; (set-fontset-font "fontset-default" 'han '("Sarasa Gothic SC"))
 (setq doom-font (font-spec :family "Courier" :size 18)
@@ -26,7 +24,10 @@
 
 ;; Switch to the new window after splitting
 (setq evil-split-window-below t
-      evil-vsplit-window-right t)
+      evil-vsplit-window-right t
+      ;; lsp-ui-sideline is redundant with eldoc and much more invasive, disable it by default.
+      lsp-ui-sideline-enable nil
+      lsp-enable-symbol-highlighting nil)
 
 (setq +doom-dashboard-functions
       '(eril-dashboard-widget-banner
@@ -43,8 +44,10 @@
       display-line-numbers-type nil
       avy-all-windows t ;; gs SPC to search all windows
       evil-snipe-scope 'visible
-      +format-on-save-enabled-modes  '(not emacs-lisp-mode sql-mode tex-mode latex-mode, xml-mode)
+      +format-on-save-enabled-modes  '(not org-mode sql-mode emacs-lisp-mode tex-mode latex-mode xml-mode)
       )
+
+(add-hook 'after-save-hook #'delete-trailing-whitespace)
 
 (custom-set-faces!
   '(font-lock-comment-face :foreground "#839496" :slant oblique))
@@ -104,7 +107,6 @@
         org-directory "~/Dropbox/org/"
         ;; org-agenda-files '(org-directory (concat org-directory "journal/"))
         org-archive-location (concat org-directory ".archive/%s::")
-        org-roam-directory (concat org-directory "notes/")
         org-notes-directory (concat org-directory "notes/")
         ;; https://orgmode.org/worg/org-tutorials/encrypting-files.html
         ;; org-journal-encrypt-journal t
@@ -134,8 +136,18 @@
         '((:auto-category t)))
   (org-super-agenda-mode))
 
+;; Jupyter
+;; (add-hook! '+org-babel-load-functions
+;;   (defun +org-babel-load-jupyter-h (lang)
+;;     (and (string-prefix-p "jupyter-" (symbol-name lang))
+;;          (require 'ob-jupyter)
+;;          (require lang nil t))))
+(setq org-babel-default-header-args:jupyter-julia
+      '((:session . "py")
+        (:kernel . "python3")))
+
 (after! spell-fu
-  (setq spell-fu-idle-delay 0.1)
+  (setq spell-fu-idle-delay 1)
   (setq ispell-personal-dictionary "~/.doom.d/ispell/words.personal.pws"))
 
 ;; Company
@@ -143,8 +155,8 @@
   :after company
   :config
   (set-company-backend! 'prog-mode 'company-tabnine 'company-capf 'company-yasnippet)
-  (setq +lsp-company-backend '(company-lsp :with company-tabnine :separate company-yasnippet))
-  (setq company-idle-delay 0
+  (setq +lsp-company-backend '(company-lsp :with company-tabnine :separate))
+  (setq company-idle-delay 0.4
         company-minimum-prefix-length 2
         company-show-numbers t))
 
@@ -153,6 +165,7 @@
   (expand-file-name "templates/" (file-name-directory load-file-name))
   "The path to a directory of yasnippet folders to use for file templates.")
 (add-to-list 'yas-snippet-dirs 'private-file-templates-dir 'append #'eq)
+
 
 (after! yasnippets
   ;; (set-file-template! "\\.vue$" ':trigger "__.vue" :mode 'web-mode)
@@ -221,6 +234,7 @@
   ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
   ;; (setq org-mind-map-engine "circo")  ; Circular Layout
   )
+
 
 (load! "+bindings")
 (load! "+commands")

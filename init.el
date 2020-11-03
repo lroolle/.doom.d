@@ -149,7 +149,7 @@
         +gnuplot
         +hugo
         +journal
-        +roam
+        ;; +roam
         +noter
         +jupyter
         +pandoc            ; pandoc integration into org's exporter

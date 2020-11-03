@@ -18,6 +18,7 @@
 ;; (package! cnfonts)
 ;; (package! pocket-reader)
 (package! leetcode)
+;; (package! nginx-mode)
 
 (package! valign :recipe (:host github :repo "casouri/valign"))
 (package! sis :recipe

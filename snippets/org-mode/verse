@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: BEGIN_VERSE
+# uuid: begin-verse
+# key: ve
+# --
+#+BEGIN_VERSE
+`%`$0
+#+END_VERSE
