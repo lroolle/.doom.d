@@ -1,4 +1,0 @@
-Goroutine
-Println
-Struct
-fmt
