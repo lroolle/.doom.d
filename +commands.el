@@ -7,6 +7,60 @@
 (ex! "mv"          #'+evil:move-this-file)
 (ex! "rm"          #'+evil:delete-this-file)
 
+
+(defun my/python-navigate-to-previous-python-class ()
+  (interactive)
+  (my/python-navigate-up-to-class-statement)
+  (beginningof-defun))
+
+
+(defun +python/nav-backward-up-class ()
+  "For nav between class block in Python-mode."
+  (interactive)
+  (let ((pos nil))
+    (while (not (equal pos (point)))
+      (setf pos (point))
+      (python-nav-backward-up-list))))
+
+(defun +python/nav-up-class ()
+  "For nav up class block in Python-mode."
+  (interactive)
+  ;; Set jump point for jump back
+  (better-jumper-set-jump)
+  (+python/nav-backward-up-class)
+  (beginning-of-defun))
+
+(defun +python/nav-down-class ()
+  "For nav down class block in Python-mode."
+  (interactive)
+  ;; Set jump point for jump back
+  (better-jumper-set-jump)
+  (+python/nav-backward-up-class)
+  (end-of-defun)
+  (end-of-defun)
+  (+python/nav-backward-up-class))
+
+(defun +eril/insert-current-date-time ()
+  "Insert the current datetime using `insert-current-date-time-format'."
+  (interactive)
+  (insert "[")
+  (insert (format-time-string "%Y-%m-%d %a %H:%M:%S" (current-time)))
+  (insert "]"))
+
+(defun +eril/insert-current-time ()
+  "Insert the current time."
+  (interactive)
+  (insert "")
+  (insert (format-time-string "%H:%M:%S" (current-time)))
+  (insert " "))
+
+(defun +org/insert-current-time-journal ()
+  "Insert the current time in org journal."
+  (interactive)
+  (insert "")
+  (insert (format-time-string "%m/%d %H:%M" (current-time)))
+  (insert " "))
+
 (defun +org/org-toc ()
   (interactive)
   (let ((headings (delq nil (loop for f in (f-entries "." (lambda (f) (f-ext? f "org")) t)
@@ -23,7 +77,7 @@
           (insert (format "* [[%s::*%s]]\n" file heading)))))
 
 
-(defun evil-title-case-region-or-line (@begin @end)
+(defun +eril/evil-title-case-region-or-line (@begin @end)
   "Title case text between nearest brackets, or current line, or text selection.
 Capitalize first letter of each word, except words like {to, of, the, a, in, or,
 and, …}. If a word already contains cap letters such as HTTP, URL, they are left
@@ -84,7 +138,7 @@ Version 2017-01-11"
                (replace-match (aref $x 1) "FIXEDCASE" "LITERAL")))
            $strPairs))))))
 
-(defun reverse-string (beg end)
+(defun +eril/reverse-string (beg end)
   "Reverse characters between BEG and END."
   (interactive "r")
   (let ((region (buffer-substring beg end)))
@@ -92,7 +146,7 @@ Version 2017-01-11"
     (insert (nreverse region))))
 
 
-(defun markdown-convert-buffer-to-org ()
+(defun +markdown/markdown-convert-buffer-to-org ()
   "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
   (interactive)
   (shell-command-on-region (point-min) (point-max)
@@ -101,7 +155,7 @@ Version 2017-01-11"
 
 
 
-(defun eril-dashboard-widget-banner ()
+(defun +eril/dashboard-widget-banner ()
   (let ((point (point)))
     (mapc (lambda (line)
             (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
@@ -137,4 +191,5 @@ Version 2017-01-11"
                    ? ))))
       (insert (make-string (or (cdr +doom-dashboard-banner-padding) 0)
                            ?\n)))))
+
 (provide '+commands)
