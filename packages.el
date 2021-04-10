@@ -7,25 +7,35 @@
 
 ;; (package! esup)
 ;; (package! benchmark-init)
+;;
+(package! s)
 (package! zoom)
 (package! dired-subtree)
 (package! company-tabnine)
 (package! disable-mouse)
-;; (package! explain-pause-mode)
+(package! explain-pause-mode)
 (package! org-super-agenda)
-(package! org-mind-map)
 (package! evil-pinyin)
-;; (package! cnfonts)
-;; (package! pocket-reader)
-(package! leetcode)
-;; (package! nginx-mode)
+(package! wucuo)
+(package! cnfonts)
+(package! format-all)
+(package! super-save)
+(package! hl-line+)
+;; (package! popwin)
 
+(package! leetcode)
+(package! atomic-chrome)
 (package! valign :recipe (:host github :repo "casouri/valign"))
 (package! sis :recipe
   (:host github :repo "laishulu/emacs-smart-input-source"))
 ;; (package! ranger)
+(package! keyfreq)
 
+(package! ejc-sql) ;; jdbc: sql
+(package! auto-complete) ;; jdbc: sql
 
+;; (package! es-mode) ;; elasticsearch mode
+;; (package! sql-clickhouse)
 ;; release. The `unpin!' macro allows you to unpin single packages...
 ;(unpin! pinned-package)
 ;; ...or multiple packages

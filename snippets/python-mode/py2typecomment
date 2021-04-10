@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: python2typecomment
+# uuid: python2typecomment
+# key: tc
+# condition: t
+# --
+# type: ($1) -> $0

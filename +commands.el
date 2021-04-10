@@ -8,10 +8,34 @@
 (ex! "rm"          #'+evil:delete-this-file)
 
 
-(defun my/python-navigate-to-previous-python-class ()
+(defun my-reload-dir-locals-for-current-buffer ()
+  "reload dir locals for the current buffer"
   (interactive)
-  (my/python-navigate-up-to-class-statement)
-  (beginningof-defun))
+  (let ((enable-local-variables :all))
+    (hack-dir-local-variables-non-file-buffer)))
+
+(defun reload-dir-locals-for-all-buffer-in-this-directory ()
+  "For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals."
+  (interactive)
+  (let ((dir default-directory))
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (equal default-directory dir))
+        (my-reload-dir-locals-for-current-buffer)))))
+
+(defun flush-blank-lines ()
+  "Removes all blank lines from buffer or region"
+  (interactive)
+  (save-excursion
+    (let (min max)
+      (if (equal (region-active-p) nil)
+          (mark-whole-buffer))
+      (setq min (region-beginning) max (region-end))
+      (flush-lines "^ *$" min max t)
+      )
+    )
+)
 
 
 (defun +python/nav-backward-up-class ()
@@ -40,6 +64,60 @@
   (end-of-defun)
   (+python/nav-backward-up-class))
 
+(defun +python/insert-pdbpp ()
+  (interactive)
+  (evil-open-below 1)
+  (insert "import pdb; pdb.pdb.set_trace()"))
+
+(defun +python/insert-named-logger ()
+  (interactive)
+  (let ((logger-name (read-string "Logger Name: ")))
+    (evil-open-below 1)
+    (insert (format "logger.debug(\"%s<<<<<<<\\n%%s\\n\", %s)" logger-name logger-name))
+    ;; (evil-open-below 1)
+    ;;(insert (format "logger.debug(%s)" logger-name))
+    ))
+
+(defun +python/insert-named-printer ()
+  (interactive)
+  (let ((logger-name (read-string "Printer Name: ")))
+    (evil-open-below 1)
+    (insert (format "print \"%s<<<<<<<\"" logger-name))
+    (evil-open-below 1)
+    (insert (format "print %s" logger-name))))
+
+(defun +org/insert-netis-jira-issue ()
+  (interactive)
+  (let ((issue-num (read-string "ISSUE: ")))
+    (insert (format "[[https://jira.netisdev.com/browse/%s][%s]]" issue-num issue-num))
+    ))
+
+(defun translate-timestamp-readable (ms)
+  (interactive)
+  (format-time-string "%Y/%m/%d %H:%M:%S" (seconds-to-time (/ ms 1)) t))
+
+(defun +eril/translate-timestamp-readable ()
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'symbol)))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert (translate-timestamp-readable (string-to-number  text))))))
+
+(defun word-or-region-to-lcc ()
+  "Convert word at point (or selected region) to lower camel case."
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'symbol)))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert (s-lower-camel-case text)))))
+
+
 (defun +eril/insert-current-date-time ()
   "Insert the current datetime using `insert-current-date-time-format'."
   (interactive)
@@ -53,6 +131,27 @@
   (insert "")
   (insert (format-time-string "%H:%M:%S" (current-time)))
   (insert " "))
+
+(defun +org/toggle-todo-done ()
+  "Mark to TODO for ordinary heading and toggle todos between todo/done"
+  (interactive)
+  (save-excursion
+    ;; Make sure command works even if point is below target heading
+    (org-back-to-heading t)
+    (cond ((looking-at "\*+ \\(TODO\\|HOLD\\)")
+           (org-todo "DONE")
+           (hide-subtree))
+          ((looking-at "\*+ ")
+           (org-todo "TODO")
+           (hide-subtree))
+          (t (message "Cann't toggle at current point.")))))
+
+(defun +org/mark-all-done ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-todo "DONE"))
+   "/TODO" 'file))
 
 (defun +org/insert-current-time-journal ()
   "Insert the current time in org journal."

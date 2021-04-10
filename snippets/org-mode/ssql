@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ssql
+# uuid: ssql
+# key: ssql
+# --
+#+BEGIN_SRC sql :exports both :results output replace raw
+SELECT `%`$0
+#+END_SRC
